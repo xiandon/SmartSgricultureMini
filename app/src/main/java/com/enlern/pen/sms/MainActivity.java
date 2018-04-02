@@ -20,14 +20,18 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.enlern.pen.sms.activity.BaseActivity;
+import com.enlern.pen.sms.activity.HistoryActivity;
 import com.enlern.pen.sms.activity.SettingActivity;
 import com.enlern.pen.sms.activity.WelcomeActivity;
 import com.enlern.pen.sms.adapter.MainRecAdapter;
 import com.enlern.pen.sms.base.ActivityManager;
+import com.enlern.pen.sms.bean.NodeSave;
 import com.enlern.pen.sms.fragment.IrrigationFragment;
 import com.enlern.pen.sms.fragment.ShadeFragment;
 import com.enlern.pen.sms.fragment.SprayFragment;
 import com.enlern.pen.sms.fragment.VentilationFragment;
+import com.enlern.pen.sms.greendao.NodeSaveDao;
+import com.enlern.pen.sms.greendao.node_save.NodeSaveUtils;
 import com.enlern.pen.sms.serial.BroadcastMain;
 import com.enlern.pen.sms.storage.SPUtils;
 import com.suke.widget.SwitchButton;
@@ -40,9 +44,12 @@ import org.xmlpull.v1.XmlPullParserException;
 
 import java.io.IOException;
 import java.security.InvalidParameterException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.Hashtable;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -110,6 +117,8 @@ public class MainActivity extends BaseActivity {
 
     private int iWhere = 0;
 
+    private NodeSaveDao nodeSaveDao;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -117,6 +126,7 @@ public class MainActivity extends BaseActivity {
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
         context = MainActivity.this;
+        nodeSaveDao = NodeSaveUtils.getSingleTon().getmDaoSession().getNodeSaveDao();
         initViews();
         setSerialPort();
 
@@ -131,6 +141,7 @@ public class MainActivity extends BaseActivity {
 
         tvTitleClean.setVisibility(View.GONE);
         tvTitleSetting.setVisibility(View.GONE);
+
 
         boardCast();
         analysis = new SmsAnalysisV2(context);
@@ -246,6 +257,7 @@ public class MainActivity extends BaseActivity {
 
                                     checkSos(nodeInfo);// 处理警戒值
                                     writeUtils(m, nodeInfo.getNode_num());// 存储协议
+                                    saveDataHistory(nodeInfo);//保存历史数据
                                 }
 
                             } catch (IOException e) {
@@ -323,6 +335,41 @@ public class MainActivity extends BaseActivity {
             }
         });
 
+    }
+
+    /**
+     * 保存历史数据
+     *
+     * @param nodeInfo
+     */
+    private void saveDataHistory(NodeInfo nodeInfo) {
+        NodeSave nodeSave = new NodeSave();
+        nodeSave.setN_data(nodeInfo.getData_analysis());
+        nodeSave.setN_data_buffer(nodeInfo.getNode_data());
+        nodeSave.setN_insert_time(getNow());
+        nodeSave.setN_sensor_cn_name(nodeInfo.getNode_name());
+        nodeSave.setN_sensor_number(nodeInfo.getNode_num());
+        nodeSave.setN_sensor_type("---");
+        nodeSave.setN_wsn(nodeInfo.getWsn());
+
+        nodeSaveDao.insert(nodeSave);
+
+        List<NodeSave> a = nodeSaveDao.loadAll();
+
+
+        if (a.size() > 10000) {
+            nodeSaveDao.deleteAll();
+        }
+
+
+    }
+
+
+    private String getNow() {
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        Date curDate = new Date(System.currentTimeMillis());
+        String str = formatter.format(curDate);
+        return str;
     }
 
     private void writeUtils(String m, String node_num) {
@@ -661,7 +708,8 @@ public class MainActivity extends BaseActivity {
             R.id.tv_main_sos_open,
             R.id.tv_main_sos_close,
             R.id.tv_main_sos_local,
-            R.id.tv_main_setting_alert})
+            R.id.tv_main_setting_alert,
+            R.id.btn_save_history})
     public void onViewClicked(View view) {
         String wsn = (String) SPUtils.get(context, "SAVE" + "0032", "ll");
         String wsnSos = (String) SPUtils.get(context, "SAVE" + "0039", "ll");
@@ -724,6 +772,12 @@ public class MainActivity extends BaseActivity {
 
             case R.id.tv_main_setting_alert:
                 startActivity(new Intent(context, SettingActivity.class));
+                break;
+
+            case R.id.btn_save_history:
+                Intent intent = new Intent(new Intent(context, HistoryActivity.class));
+                intent.putExtra("NODE_KEY", "0000");
+                startActivity(intent);
                 break;
         }
     }

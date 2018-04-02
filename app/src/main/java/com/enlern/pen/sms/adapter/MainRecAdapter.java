@@ -58,6 +58,7 @@ public class MainRecAdapter extends RecyclerView.Adapter {
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
         TextView tv_show_num = holder.itemView.findViewById(R.id.tv_show_num);
+
         TextView tv_show_name = holder.itemView.findViewById(R.id.tv_show_name);
         TextView tv_show_status = holder.itemView.findViewById(R.id.tv_show_status);
         TextView tv_show_data = holder.itemView.findViewById(R.id.tv_show_data);

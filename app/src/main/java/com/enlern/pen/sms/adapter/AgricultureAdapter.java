@@ -1,6 +1,7 @@
 package com.enlern.pen.sms.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -11,6 +12,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.enlern.pen.sms.R;
+import com.enlern.pen.sms.activity.HistoryActivity;
 import com.xiandon.wsn.node.NodeInfo;
 
 import java.util.ArrayList;
@@ -51,7 +53,7 @@ public class AgricultureAdapter extends RecyclerView.Adapter {
 
 
     @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
+    public void onBindViewHolder(final RecyclerView.ViewHolder holder, final int position) {
         tv_show_name = holder.itemView.findViewById(R.id.tv_agriculture_name);
         tv_show_num = holder.itemView.findViewById(R.id.tv_agriculture_num);
         tv_show_data = holder.itemView.findViewById(R.id.tv_agriculture_data);
@@ -108,6 +110,15 @@ public class AgricultureAdapter extends RecyclerView.Adapter {
                 break;
 
         }
+
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(new Intent(mContext, HistoryActivity.class));
+                intent.putExtra("NODE_KEY",nodeInfos.get(position).getNode_num());
+                mContext.startActivity(intent);
+            }
+        });
 
 
     }

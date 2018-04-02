@@ -1,5 +1,5 @@
 apply plugin: 'com.android.application'
-
+apply plugin: 'org.greenrobot.greendao' // apply plugin
 android {
     compileSdkVersion 26
     defaultConfig {
@@ -30,6 +30,12 @@ android {
     buildToolsVersion '27.0.1'
 }
 
+greendao {
+    schemaVersion 1
+    daoPackage 'com.enlern.pen.sms.greendao'
+    targetGenDir 'src/main/java'
+}
+
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation 'com.android.support:appcompat-v7:26.1.0'
@@ -51,4 +57,5 @@ dependencies {
     implementation files('src/main/jniLibs/HCNetSDK.jar')
     implementation files('src/main/jniLibs/mysql-connector-java-5.0.8-bin.jar')
     compile 'com.github.zcweng:switch-button:0.0.3@aar'
+    compile 'org.greenrobot:greendao:3.2.2'
 }

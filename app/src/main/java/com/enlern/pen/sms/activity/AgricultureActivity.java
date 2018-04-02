@@ -84,7 +84,6 @@ public class AgricultureActivity extends BaseActivity {
             public void nodeRec(String rec) {
                 try {
                     NodeInfo info = analysis.analysis(rec);
-                    Log.i(TAG, "nodeRec: " + info.getWsn());
                     if (info != null && MainActivity.getBoolean) {
                         adapter.update(info);
                     }
