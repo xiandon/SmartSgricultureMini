@@ -265,7 +265,7 @@ public class MainActivity extends BaseActivity {
                             } catch (XmlPullParserException e) {
                                 e.printStackTrace();
                             }
-                                /*广播数据*/
+                            /*广播数据*/
                             setBroadCast(m);
                         }
                         break;
@@ -593,6 +593,7 @@ public class MainActivity extends BaseActivity {
                 break;
             case "0001":
                 bSos01 = SPUtils.contains(context, "S01L");
+                Log.i(TAG, "checkSos: " + bSos01);
                 iWhere = 4;
                 if (bSos01) {
                     // 设置警戒值
@@ -602,17 +603,18 @@ public class MainActivity extends BaseActivity {
                     // 实际警戒值
                     String a = nodeInfo.getData_analysis();
 
-                    String control = "WSN004000";
+                    String control = "WSN0043";
                     boolean bControl = SPUtils.contains(context, control);
                     if (bControl) {
                         String wsn = (String) SPUtils.get(context, control, "Hello");
+                        Log.i(TAG, "checkSos: " + a + "----" + dS2);
                         if (Double.parseDouble(a) > Double.parseDouble(dS2)) {
                             // 关闭
                             count43 = 0;
                             count42 = 0;
                             if (bAuto) {
                                 if (count41 < 2) {
-                                    openSun(wsn, "0002");
+                                    openSun(wsn, "0001");
                                     count41++;
                                 }
                             }
@@ -624,7 +626,7 @@ public class MainActivity extends BaseActivity {
                             count43 = 0;
                             if (bAuto) {
                                 if (count42 < 2) {
-                                    openSun(wsn, "0001");
+                                    openSun(wsn, "0000");
                                     count41++;
                                 }
                             }
