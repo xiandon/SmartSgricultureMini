@@ -637,7 +637,7 @@ public class MainActivity extends BaseActivity {
                             count42 = 0;
                             if (bAuto) {
                                 if (count43 < 2) {
-                                    openSun(wsn, "0002");
+                                    openSun(wsn, "0001");
                                 }
                             }
                             tvMainSosLocal.setText("光照正常");
