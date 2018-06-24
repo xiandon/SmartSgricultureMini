@@ -104,6 +104,7 @@ public class HeatingFragment extends BaseFragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        Log.i(TAG, "onCreateView加热系统生名周期");
         view = inflater.inflate(R.layout.layout_control, container, false);
         context = getActivity();
         unbinder = ButterKnife.bind(this, view);

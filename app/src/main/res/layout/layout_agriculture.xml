@@ -7,10 +7,6 @@
 
     <include layout="@layout/layout_title" />
 
-
-
-
-
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recyclerView_node"
         android:layout_width="match_parent"

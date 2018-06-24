@@ -88,6 +88,8 @@ public class MainActivity extends BaseActivity {
     RecyclerView recyclerViewShow;
     @BindView(R.id.tv_public_title)
     TextView tvPublicTitle;
+
+
     private String strSerialSel = "";
     private String[] deviceEntries = null;
     private Hashtable<String, String> htSerialToPath = null;

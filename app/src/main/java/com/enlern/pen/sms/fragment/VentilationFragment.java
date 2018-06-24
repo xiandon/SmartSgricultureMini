@@ -104,6 +104,7 @@ public class VentilationFragment extends BaseFragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        Log.i(TAG, "通风系统onCreateView生名周期");
         view = inflater.inflate(R.layout.layout_control, container, false);
         context = getActivity();
         unbinder = ButterKnife.bind(this, view);

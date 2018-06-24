@@ -105,6 +105,7 @@ public class IrrigationFragment extends BaseFragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        Log.i(TAG, "onCreateView灌溉生名周期");
         view = inflater.inflate(R.layout.layout_control, container, false);
         context = getActivity();
         unbinder = ButterKnife.bind(this, view);
